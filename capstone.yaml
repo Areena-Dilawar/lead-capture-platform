@@ -1,0 +1,34 @@
+name: lead-capture-platform
+title: "Embeddable Widget & Lead-Capture Platform"
+
+track: Backend
+stack:
+  language: Python
+  framework: FastAPI
+  database: PostgreSQL
+
+phase: 1
+status: design-complete
+
+core_scope:
+  - multi-tenant widget management
+  - embeddable widget delivery
+  - public lead submission
+  - request validation
+  - rate limiting
+  - spam protection
+  - geo enrichment with fallback
+  - PostgreSQL persistence
+  - background notification jobs
+  - owner dashboard APIs
+  - basic analytics
+
+documentation:
+  - DESIGN.md
+  - README.md
+  - BUILDLOG.md
+  - EVIDENCE.md
+  - .env.example
+
+non_goal:
+  - production-grade drag-and-drop form builder
