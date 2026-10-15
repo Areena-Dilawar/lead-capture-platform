@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16
+    container_name: lead-capture-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: leadcapture
+      POSTGRES_USER: leadcapture_user
+      POSTGRES_PASSWORD: leadcapture_password_
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U leadcapture_user -d leadcapture" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

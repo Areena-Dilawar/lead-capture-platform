@@ -27,6 +27,52 @@
 
 ### Current Status
 
-Phase 1 design is complete.
+- **Phase 1 (Design)**: Complete (Gate passed: `DESIGN.md` committed).
+- **Phase 2 (The Hardened Submission Path)**: In Progress (Database foundation complete; API endpoints and submission pipeline next).
 
-Implementation has not started yet.
+---
+
+## Phase 2 — The Hardened Submission Path (In Progress)
+
+### Completed (Database & Model Foundation)
+- Configured PostgreSQL 16 using Docker Compose.
+- Connected SQLAlchemy to PostgreSQL using environment-based configuration.
+- Initialized Alembic for database migrations.
+- Created and applied migrations for all four core models:
+  - `Tenant`
+  - `User`
+  - `Widget`
+  - `Submission`
+- Verified that all four application tables and the `alembic_version` table exist in PostgreSQL.
+- Added Git ignore rules to protect local environment variables and the Python virtual environment.
+
+### In Progress / Next Steps
+- Establish the layered API architecture (routes, services, repositories, schemas).
+- Implement authentication and tenant-scoped widget management.
+- Build the public submission endpoint (`POST /public/widgets/{id}/submissions`) with:
+  - Cross-Origin Resource Sharing (CORS) & preflight handling.
+  - Boundary payload validation (clean 4xx JSON errors, never 500).
+  - Rate limiting & honeypot spam protection.
+  - Geo-enrichment fallback chain (`ip-api.com` → `ipapi.co`).
+  - Safe background side effect (notification/email).
+- **Gate Objective**: Verify a cross-origin `curl` stores an enriched row.
+
+---
+
+## AI Collaboration & Debugging Log
+
+### Where AI Helped
+- Scaffolding the initial system architecture, design specification ([DESIGN.md](DESIGN.md)), and data flow sketches.
+- Generating SQLAlchemy 2.0 declarative models with modern type annotations (`Mapped`, `mapped_column`) and Postgres-specific types (`JSONB`, `INET`).
+- Structuring Alembic migrations and Docker Compose configuration.
+
+### Where AI / Defaults Were Wrong & What Was Changed
+- **Alembic Driver Resolution Error**:
+  - *Issue*: Running `alembic current` threw `ModuleNotFoundError: No module named 'psycopg'` because SQLAlchemy 2.0 defaults `postgresql://` to `psycopg` (v3), whereas the project virtual environment uses `psycopg2-binary`.
+  - *Fix*: Updated `migrations/env.py` to rewrite `postgresql://` to `postgresql+psycopg2://` before passing it to `engine_from_config`, aligning Alembic with the runtime configuration in `app/database.py`.
+- **Phase Definition Alignment**:
+  - *Issue*: Initially labeled the completed database setup as "Phase 2 Complete", which clashed with the official Capstone rubric where Phase 2 requires the full hardened submission path and a passing cross-origin submission gate.
+  - *Fix*: Corrected the status in this log to accurately reflect Phase 2 as *In Progress*, clearly separating the database foundation from the upcoming submission pipeline.
+
+### Engineering Ownership
+- Manually inspected and verified the database tables (`tenants`, `users`, `widgets`, `submissions`, `alembic_version`) directly inside PostgreSQL via `psql` and SQLAlchemy inspector.
