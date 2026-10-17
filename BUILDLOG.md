@@ -46,9 +46,15 @@
 - Verified that all four application tables and the `alembic_version` table exist in PostgreSQL.
 - Added Git ignore rules to protect local environment variables and the Python virtual environment.
 
+### Completed (Health API)
+- Added a dedicated health route in `app/api/routes/health.py`.
+- Registered the health router in `app/main.py`.
+- Tested `GET /health` locally and confirmed it returns `{"status": "ok"}`.
+- Confirmed the FastAPI application exposes its interactive documentation at `/docs`.
+
 ### In Progress / Next Steps
-- Establish the layered API architecture (routes, services, repositories, schemas).
-- Implement authentication and tenant-scoped widget management.
+- Implement authentication and tenant-scoped access so each tenant can access only its own resources.
+- Build tenant-scoped widget management CRUD APIs.
 - Build the public submission endpoint (`POST /public/widgets/{id}/submissions`) with:
   - Cross-Origin Resource Sharing (CORS) & preflight handling.
   - Boundary payload validation (clean 4xx JSON errors, never 500).
@@ -76,3 +82,4 @@
 
 ### Engineering Ownership
 - Manually inspected and verified the database tables (`tenants`, `users`, `widgets`, `submissions`, `alembic_version`) directly inside PostgreSQL via `psql` and SQLAlchemy inspector.
+- Tested the `GET /health` endpoint locally and verified the successful JSON response.

@@ -1,11 +1,11 @@
+
 from fastapi import FastAPI
 
+from app.api.routes import health
+
 app = FastAPI(
-    title="FlyRank Lead-Capture Platform",
-    version="0.1.0",
+    title="Embeddable Widget & Lead-Capture Platform",
+    version="0.0.1",
 )
 
-
-@app.get("/health")
-def health_check():
-    return {"status": "ok"}
+app.include_router(health.router)
